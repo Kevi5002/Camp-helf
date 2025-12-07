@@ -37,14 +37,14 @@
     <!-- PAGE HEADER -->
     <header class="container text-center my-4">
         <h1>Campus Map</h1>
-        <p class="lead">Navigate campus with an interactive map. Building markers powered by live location data.</p>
+        <p class="lead">Navigate campus with an interactive map. Building markers powered by OpenStreetMap.</p>
     </header>
 
     <!-- MAP CONTAINER -->
     <section class="container mb-5">
         <div class="card shadow-sm p-3">
             <h4>Interactive Campus Map</h4>
-            <p class="text-muted">(Map loads using Leaflet.js — API integration in progress)</p>
+            <p class="text-muted">(Map powered by Leaflet.js + OpenStreetMap)</p>
 
             <!-- Map Box -->
             <div id="campusMap" style="height: 500px; width: 100%;"></div>
@@ -63,6 +63,28 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <!-- Custom JS -->
-    <script src="app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const map = L.map('campusMap').setView([41.8781, -87.6298], 15); // Sample campus coordinates
+
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+                maxZoom: 19
+            }).addTo(map);
+
+            // Sample building markers
+            const buildings = [
+                {name: 'Main Library', coords: [41.8785, -87.6298]},
+                {name: 'Student Center', coords: [41.8780, -87.6285]},
+                {name: 'Dining Hall', coords: [41.8775, -87.6305]},
+                {name: 'Engineering Building', coords: [41.8790, -87.6290]}
+            ];
+
+            buildings.forEach(b => {
+                L.marker(b.coords).addTo(map).bindPopup(`<b>${b.name}</b>`);
+            });
+        });
+    </script>
 </body>
 </html>
